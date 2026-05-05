@@ -5,6 +5,7 @@ import { addReagent, getReagents, useReagent } from './api/reagentApi'
 const reagents = ref<any[]>([])
 const message = ref('')
 const useAmounts = reactive<Record<number, number>>({})
+
 const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
 const reagentNameOptions = [
   'FS pneumoniae Ag',
@@ -123,17 +124,17 @@ onMounted(() => {
       <h1>試劑管理系統</h1>
 
       <section v-if="currentPage === 'home'" class="home-menu">
-  <button class="menu-button" @click="currentPage = 'add'">
-    新增試劑
-  </button>
+       <button class="menu-button" @click="currentPage = 'add'">
+       新增試劑
+       </button>
 
-  <button class="menu-button" @click="currentPage = 'list'">
-    試劑庫存列表
-  </button>
+      <button class="menu-button" @click="currentPage = 'list'">
+      試劑庫存列表
+      </button>
 
-  <button class="menu-button" @click="currentPage = 'use'">
-    使用試劑 / 扣庫存
-  </button>
+      <button class="menu-button" @click="currentPage = 'use'">
+      使用試劑 / 扣庫存
+      </button>
 </section>
       <section v-if="currentPage === 'add'" class="card form-card"></section>
         <h2>新增試劑</h2>
