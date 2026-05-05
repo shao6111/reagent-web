@@ -5,7 +5,13 @@ import { addReagent, getReagents, useReagent } from './api/reagentApi'
 const reagents = ref<any[]>([])
 const message = ref('')
 const useAmounts = reactive<Record<number, number>>({})
-
+const reagentNameOptions = [
+  'FS pneumoniae Ag',
+  'Influenza A/B Ag',
+  'COVID-19 Ag',
+  'RSV Ag',
+  'Legionella Ag'
+]
 const form = reactive({
   reagentName: '',
   lotNo: '',
@@ -120,7 +126,16 @@ onMounted(() => {
 
         <div class="form">
           <label>試劑名稱</label>
-          <input v-model="form.reagentName" type="text" placeholder="例如 Pneumonias Ag" />
+<select v-model="form.reagentName">
+  <option value="">請選擇試劑名稱</option>
+  <option
+    v-for="name in reagentNameOptions"
+    :key="name"
+    :value="name"
+  >
+    {{ name }}
+  </option>
+</select>
 
           <label>批號</label>
           <input v-model="form.lotNo" type="text" placeholder="例如 LOT6026BK2AC/1" />
@@ -554,5 +569,21 @@ th {
     background: #fff4e6;
     border-radius: 12px;
   }
+}
+select {
+  width: 100%;
+  max-width: 100%;
+  padding: 9px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background: white;
+}
+
+.form select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 </style>
