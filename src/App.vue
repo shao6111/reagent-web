@@ -251,20 +251,32 @@ onMounted(() => {
 </template>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
+:global(html),
+:global(body),
+:global(#app) {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 .page {
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 24px 12px;
   font-family: Arial, "Microsoft JhengHei", sans-serif;
-  background:  #eef7ff;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  background: #eef7ff;
+  overflow-x: hidden;
 }
 
 .container {
   width: 100%;
-  max-width: 1100px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 h1 {
@@ -275,9 +287,11 @@ h1 {
 
 h2 {
   margin-bottom: 18px;
+  text-align: center;
 }
 
 .card {
+  width: 100%;
   padding: 24px;
   margin-bottom: 24px;
   border: 1px solid #ddd;
@@ -287,6 +301,7 @@ h2 {
 }
 
 .form-card {
+  width: 100%;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
@@ -294,17 +309,18 @@ h2 {
 
 .form {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 14px;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 label {
-  display: flex;
-  align-items: center;
+  display: block;
   font-weight: bold;
+  margin-top: 6px;
 }
 
 input {
+  width: 100%;
   padding: 9px;
   border: 1px solid #aaa;
   border-radius: 6px;
@@ -312,7 +328,8 @@ input {
 }
 
 button {
-  grid-column: 2;
+  width: 100%;
+  grid-column: auto;
   padding: 11px;
   border: none;
   border-radius: 6px;
@@ -361,12 +378,19 @@ th {
   font-weight: bold;
 }
 
-.status-warning {
-  color: orange;
+.status-warning,
+.status-yellow {
+  color: #d6a100;
   font-weight: bold;
 }
 
-.status-danger {
+.status-orange {
+  color: #f28c28;
+  font-weight: bold;
+}
+
+.status-danger,
+.status-red {
   color: red;
   font-weight: bold;
 }
@@ -381,21 +405,6 @@ th {
   color: gray;
 }
 
-.status-yellow {
-  color: #d6a100;
-  font-weight: bold;
-}
-
-.status-orange {
-  color: #f28c28;
-  font-weight: bold;
-}
-
-.status-red {
-  color: red;
-  font-weight: bold;
-}
-
 .use-input {
   width: 80px;
 }
@@ -405,33 +414,44 @@ th {
   padding: 8px 12px;
 }
 
-/* 手機卡片版預設隱藏 */
+/* 電腦版先隱藏手機卡片 */
 .mobile-card-list {
   display: none;
 }
 
-/* 手機版設定 */
-@media (max-width: 768px) {
+/* 手機版 */
+@media screen and (max-width: 768px) {
   .page {
-    padding: 12px 8px;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 0;
   }
 
   .container {
+    width: 100%;
     max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
   }
 
   h1 {
-    font-size: 24px;
-    margin-bottom: 16px;
+    font-size: 26px;
+    margin-bottom: 18px;
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 14px;
   }
 
-  .card {
+  .card,
+  .form-card {
+    width: 100%;
+    max-width: 100%;
     padding: 14px;
+    margin-left: 0;
+    margin-right: 0;
     margin-bottom: 16px;
     border-radius: 12px;
   }
@@ -442,32 +462,37 @@ th {
   }
 
   label {
+    width: 100%;
+    display: block;
     margin-top: 4px;
   }
 
   input {
     width: 100%;
-    box-sizing: border-box;
+    max-width: 100%;
     font-size: 16px;
   }
 
   button {
-    grid-column: auto;
     width: 100%;
+    max-width: 100%;
+    grid-column: auto;
     font-size: 16px;
   }
 
-  /* 手機版隱藏表格 */
   .table-wrapper {
     display: none;
   }
 
-  /* 手機版顯示卡片 */
   .mobile-card-list {
     display: block;
+    width: 100%;
+    max-width: 100%;
   }
 
   .reagent-card {
+    width: 100%;
+    max-width: 100%;
     background: #fff4e6;
     border: 1px solid #f1d1a6;
     border-radius: 14px;
@@ -477,27 +502,32 @@ th {
 
   .card-header {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    flex-direction: column;
     align-items: flex-start;
+    gap: 6px;
     margin-bottom: 10px;
   }
 
   .card-header h3 {
-    margin: 0 0 4px 0;
+    margin: 0;
     font-size: 18px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .lot {
     margin: 0;
     color: #666;
     font-size: 14px;
-    word-break: break-all;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .card-info p {
     margin: 6px 0;
     font-size: 15px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .use-area {
@@ -516,99 +546,13 @@ th {
   }
 
   .empty-card {
+    width: 100%;
+    max-width: 100%;
     padding: 16px;
     text-align: center;
     color: gray;
     background: #fff4e6;
     border-radius: 12px;
-  }
-}
-}
-
-/* 強制修正手機畫面偏一邊 */
-:global(html),
-:global(body),
-:global(#app) {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-@media screen and (max-width: 768px) {
-  .page {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: 100vh;
-    padding: 10px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .card,
-  .form-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .form {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 8px !important;
-  }
-
-  .form label {
-    width: 100% !important;
-    display: block !important;
-  }
-
-  .form input {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  button {
-    width: 100% !important;
-    max-width: 100% !important;
-    grid-column: auto !important;
-    box-sizing: border-box !important;
-  }
-
-  .table-wrapper {
-    display: none !important;
-  }
-
-  .mobile-card-list {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .reagent-card,
-  .empty-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .card-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
   }
 }
 </style>
