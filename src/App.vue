@@ -202,6 +202,49 @@ onMounted(() => {
             </tbody>
           </table>
         </div>
+
+        <div class="mobile-card-list">
+          <div
+            class="reagent-card"
+            v-for="item in reagents"
+            :key="'mobile-' + item.reagentId"
+          >
+            <div class="card-header">
+              <div>
+                <h3>{{ item.reagentName }}</h3>
+                <p class="lot">批號：{{ item.lotNo }}</p>
+              </div>
+
+              <span :class="getStatusClass(item.expiryDate, item.quantity)">
+                {{ getStatus(item.expiryDate, item.quantity) }}
+              </span>
+            </div>
+
+            <div class="card-info">
+              <p><strong>ID：</strong>{{ item.reagentId }}</p>
+              <p><strong>庫存：</strong>{{ item.quantity }} {{ item.unit }}</p>
+              <p><strong>到期日：</strong>{{ item.expiryDate }}</p>
+              <p><strong>位置：</strong>{{ item.storageLocation }}</p>
+            </div>
+
+            <div class="use-area">
+              <input
+                class="use-input"
+                v-model.number="useAmounts[item.reagentId]"
+                type="number"
+                min="1"
+                placeholder="輸入使用數量"
+              />
+
+              <button class="use-button" @click="submitUseReagent(item.reagentId)">
+                使用試劑
+              </button>
+            </div>
+          </div>
+          <div v-if="reagents.length === 0" class="empty-card">
+            目前沒有試劑資料
+          </div>
+        </div>
       </section>
     </div>
   </div>
@@ -336,5 +379,236 @@ th {
 .empty {
   text-align: center;
   color: gray;
+}
+
+.status-yellow {
+  color: #d6a100;
+  font-weight: bold;
+}
+
+.status-orange {
+  color: #f28c28;
+  font-weight: bold;
+}
+
+.status-red {
+  color: red;
+  font-weight: bold;
+}
+
+.use-input {
+  width: 80px;
+}
+
+.use-button {
+  grid-column: auto;
+  padding: 8px 12px;
+}
+
+/* 手機卡片版預設隱藏 */
+.mobile-card-list {
+  display: none;
+}
+
+/* 手機版設定 */
+@media (max-width: 768px) {
+  .page {
+    padding: 12px 8px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .card {
+    padding: 14px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  label {
+    margin-top: 4px;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  button {
+    grid-column: auto;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  /* 手機版隱藏表格 */
+  .table-wrapper {
+    display: none;
+  }
+
+  /* 手機版顯示卡片 */
+  .mobile-card-list {
+    display: block;
+  }
+
+  .reagent-card {
+    background: #fff4e6;
+    border: 1px solid #f1d1a6;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .card-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+  }
+
+  .lot {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    word-break: break-all;
+  }
+
+  .card-info p {
+    margin: 6px 0;
+    font-size: 15px;
+  }
+
+  .use-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .use-input {
+    width: 100%;
+  }
+
+  .use-button {
+    width: 100%;
+  }
+
+  .empty-card {
+    padding: 16px;
+    text-align: center;
+    color: gray;
+    background: #fff4e6;
+    border-radius: 12px;
+  }
+}
+}
+
+/* 強制修正手機畫面偏一邊 */
+:global(html),
+:global(body),
+:global(#app) {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .page {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100vh;
+    padding: 10px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .card,
+  .form-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .form {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .form label {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .form input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  button {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-column: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .table-wrapper {
+    display: none !important;
+  }
+
+  .mobile-card-list {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .reagent-card,
+  .empty-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
 }
 </style>
