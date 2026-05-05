@@ -11,7 +11,7 @@ const reagentNameOptions = [
   'COVID-19 Ag',
   'RSV Ag',
   'Legionella Ag'
-]
+].sort((a, b) => a.localeCompare(b, 'en'))
 const form = reactive({
   reagentName: '',
   lotNo: '',
