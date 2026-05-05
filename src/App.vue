@@ -5,6 +5,7 @@ import { addReagent, getReagents, useReagent } from './api/reagentApi'
 const reagents = ref<any[]>([])
 const message = ref('')
 const useAmounts = reactive<Record<number, number>>({})
+const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
 const reagentNameOptions = [
   'FS pneumoniae Ag',
   'Influenza A/B Ag',
@@ -121,9 +122,29 @@ onMounted(() => {
     <div class="container">
       <h1>試劑管理系統</h1>
 
-      <section class="card form-card">
-        <h2>新增試劑</h2>
+      <section v-if="currentPage === 'home'" class="home-menu">
+  <button class="menu-button" @click="currentPage = 'add'">
+    新增試劑
+  </button>
 
+  <button class="menu-button" @click="currentPage = 'list'">
+    試劑庫存列表
+  </button>
+
+  <button class="menu-button" @click="currentPage = 'use'">
+    使用試劑 / 扣庫存
+  </button>
+</section>
+      <section v-if="currentPage === 'add'" class="card form-card"></section>
+        <h2>新增試劑</h2>
+        <section v-if="currentPage === 'add'" class="card form-card">
+  <h2>新增試劑</h2>
+
+  <button class="back-button" @click="currentPage = 'home'">
+    返回首頁
+  </button>
+
+  <div class="form">
         <div class="form">
           <label>試劑名稱</label>
 <select v-model="form.reagentName">
@@ -158,8 +179,14 @@ onMounted(() => {
         <p class="message">{{ message }}</p>
       </section>
 
-      <section class="card">
-        <h2>試劑庫存列表</h2>
+      <section v-if="currentPage === 'list' || currentPage === 'use'" class="card"></section>
+        <h2>
+  {{ currentPage === 'use' ? '使用試劑 / 扣庫存' : '試劑庫存列表' }}
+</h2>
+
+<button class="back-button" @click="currentPage = 'home'">
+  返回首頁
+</button>
 
         <div class="table-wrapper">
           <table>
@@ -173,8 +200,8 @@ onMounted(() => {
                 <th>到期日</th>
                 <th>位置</th>
                 <th>狀態</th>
-                <th>使用數量</th>
-                <th>操作</th>
+                <th v-if="currentPage === 'use'">使用數量</th>
+                <th v-if="currentPage === 'use'">操作</th>
               </tr>
             </thead>
 
@@ -194,7 +221,7 @@ onMounted(() => {
   </span>
 </td>
 
-<td>
+<td v-if="currentPage === 'use'">
   <input
     class="use-input"
     v-model.number="useAmounts[item.reagentId]"
@@ -204,7 +231,7 @@ onMounted(() => {
   />
 </td>
 
-<td>
+<td v-if="currentPage === 'use'">
   <button class="use-button" @click="submitUseReagent(item.reagentId)">
     使用
   </button>
@@ -242,7 +269,7 @@ onMounted(() => {
               <p><strong>位置：</strong>{{ item.storageLocation }}</p>
             </div>
 
-            <div class="use-area">
+            <div v-if="currentPage === 'use'" class="use-area">
               <input
                 class="use-input"
                 v-model.number="useAmounts[item.reagentId]"
