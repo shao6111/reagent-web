@@ -78,8 +78,12 @@ async function loadReagents() {
 async function submitForm() {
   const missingFields: string[] = []
 
-  if (!form.reagentName || form.reagentName.trim() === '') {
-    missingFields.push('試劑名稱')
+  const selectedReagentName = form.reagentName.trim()
+  const typedReagentName = newReagentName.value.trim()
+  const stockInReagentName = typedReagentName || selectedReagentName
+
+  if (!stockInReagentName) {
+    missingFields.push('試劑名稱或新增試劑名稱')
   }
 
   if (!form.lotNo || form.lotNo.trim() === '') {
@@ -109,8 +113,14 @@ async function submitForm() {
   }
 
   try {
+    if (typedReagentName && !reagentNameOptions.value.includes(typedReagentName)) {
+      reagentNameOptions.value.push(typedReagentName)
+      reagentNameOptions.value.sort((a, b) => a.localeCompare(b, 'en'))
+      localStorage.setItem('reagentNameOptions', JSON.stringify(reagentNameOptions.value))
+    }
+
     await addReagent({
-      reagentName: form.reagentName,
+      reagentName: stockInReagentName,
       lotNo: form.lotNo,
       quantity: Number(form.quantity),
       unit: form.unit,
@@ -126,6 +136,7 @@ async function submitForm() {
     form.unit = '盒'
     form.expiryDate = ''
     form.storageLocation = ''
+    newReagentName.value = ''
 
     await loadReagents()
   } catch (error) {
@@ -134,6 +145,7 @@ async function submitForm() {
     message.value = '試劑入庫失敗'
   }
 }
+
 async function submitUseReagent(id: number) {
   const amount = useAmounts[id] || 0
 
