@@ -345,7 +345,29 @@ h2 {
   margin-left: auto;
   margin-right: auto;
 }
+.home-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
 
+.home-menu .menu-button {
+  background: #fff4cc;
+  color: #333;
+  border: 1px solid #e6d38a;
+  border-radius: 10px;
+  padding: 14px 20px;
+  min-width: 180px;
+  width: auto;
+  grid-column: auto;
+}
+
+.home-menu .menu-button:hover {
+  background: #ffe9a8;
+}
 .form {
   display: grid;
   grid-template-columns: 1fr;
@@ -605,6 +627,19 @@ select {
   background: white;
 }
 
+  .home-menu {
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .home-menu .menu-button {
+    width: auto;
+    min-width: 120px;
+    font-size: 15px;
+    padding: 12px 10px;
+  }
+  
 .form select {
   width: 100%;
   max-width: 100%;
