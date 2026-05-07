@@ -13,13 +13,50 @@ const sortedReagents = computed(() => {
 })
 
 const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
-const reagentNameOptions = [
+
+const defaultReagentNames = [
   'FS pneumoniae Ag',
   'Influenza A/B Ag',
   'COVID-19 Ag',
   'RSV Ag',
   'Legionella Ag'
-].sort((a, b) => a.localeCompare(b, 'en'))
+]
+
+const savedReagentNames = localStorage.getItem('reagentNameOptions')
+
+const reagentNameOptions = ref<string[]>(
+  savedReagentNames
+    ? JSON.parse(savedReagentNames)
+    : [...defaultReagentNames].sort((a, b) => a.localeCompare(b, 'en'))
+)
+
+const newReagentName = ref('')
+
+function addNewReagentName() {
+  const name = newReagentName.value.trim()
+
+  if (!name) {
+    message.value = '請輸入新試劑名稱'
+    return
+  }
+
+  if (reagentNameOptions.value.includes(name)) {
+    message.value = '這個試劑名稱已經存在'
+    form.reagentName = name
+    newReagentName.value = ''
+    return
+  }
+
+  reagentNameOptions.value.push(name)
+  reagentNameOptions.value.sort((a, b) => a.localeCompare(b, 'en'))
+
+  localStorage.setItem('reagentNameOptions', JSON.stringify(reagentNameOptions.value))
+
+  form.reagentName = name
+  newReagentName.value = ''
+  message.value = '已加入新的試劑名稱'
+}
+
 const form = reactive({
   reagentName: '',
   lotNo: '',
@@ -131,7 +168,7 @@ onMounted(() => {
 
       <section v-if="currentPage === 'home'" class="home-menu">
        <button class="menu-button" @click="currentPage = 'add'">
-       新增試劑
+       試劑入庫
        </button>
 
       <button class="menu-button" @click="currentPage = 'list'">
@@ -152,7 +189,7 @@ onMounted(() => {
 </button>
 
         <section v-if="currentPage === 'add'" class="card form-card">
-  <h2>新增試劑</h2>
+  <h2>試劑入庫</h2>
 
     <div class="form">
     <label>試劑名稱</label>
@@ -166,6 +203,19 @@ onMounted(() => {
         {{ name }}
       </option>
     </select>
+
+    <label>新增試劑名稱</label>
+<div class="new-reagent-name-row">
+  <input
+    v-model="newReagentName"
+    type="text"
+    placeholder="輸入新的試劑名稱"
+  />
+
+  <button class="add-name-button" @click="addNewReagentName">
+    加入下拉選單
+  </button>
+</div>
 
           <label>批號</label>
           <input v-model="form.lotNo" type="text" placeholder="例如 LOT6026BK2AC/1" />
@@ -182,7 +232,7 @@ onMounted(() => {
           <label>存放位置</label>
           <input v-model="form.storageLocation" type="text" placeholder="例如 室溫 / 冷藏冰箱A" />
 
-          <button @click="submitForm">新增試劑</button>
+          <button @click="submitForm">試劑入庫</button>
         </div>
 
         <p class="message">{{ message }}</p>
