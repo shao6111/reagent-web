@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { addReagent, getReagents, useReagent } from './api/reagentApi'
 
 const reagents = ref<any[]>([])
 const message = ref('')
 const useAmounts = reactive<Record<number, number>>({})
+
+const sortedReagents = computed(() => {
+  return [...reagents.value].sort((a, b) => {
+    return String(a.reagentName || '').localeCompare(String(b.reagentName || ''), 'en')
+  })
+})
 
 const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
 const reagentNameOptions = [
@@ -206,7 +212,7 @@ onMounted(() => {
             </thead>
 
             <tbody>
-              <tr v-for="item in reagents" :key="item.reagentId">
+              <tr v-for="item in sortedReagents" :key="item.reagentId">
                 <td>{{ item.reagentId }}</td>
                 <td>{{ item.reagentName }}</td>
                 <td>{{ item.lotNo }}</td>
@@ -248,7 +254,7 @@ onMounted(() => {
         <div class="mobile-card-list">
           <div
             class="reagent-card"
-            v-for="item in reagents"
+            v-for="item in sortedReagents"
             :key="'mobile-' + item.reagentId"
           >
             <div class="card-header">
