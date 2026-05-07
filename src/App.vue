@@ -699,4 +699,50 @@ select {
   font-size: 14px;
 }
 
+/* 強制表格塞進同一個畫面，不出現橫向滑桿 */
+.card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 4px 2px;
+  font-size: 12px;
+  white-space: normal !important;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.use-input {
+  width: 100%;
+  max-width: 65px;
+  padding: 4px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.use-button {
+  width: 100%;
+  min-width: 0;
+  padding: 5px 4px;
+  font-size: 12px;
+}
+
 </style>
