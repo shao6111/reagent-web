@@ -76,9 +76,49 @@ async function loadReagents() {
 }
 
 async function submitForm() {
+  const missingFields: string[] = []
+
+  if (!form.reagentName || form.reagentName.trim() === '') {
+    missingFields.push('試劑名稱')
+  }
+
+  if (!form.lotNo || form.lotNo.trim() === '') {
+    missingFields.push('批號')
+  }
+
+  if (!form.quantity || Number(form.quantity) <= 0) {
+    missingFields.push('數量')
+  }
+
+  if (!form.unit || form.unit.trim() === '') {
+    missingFields.push('單位')
+  }
+
+  if (!form.expiryDate || form.expiryDate.trim() === '') {
+    missingFields.push('到期日')
+  }
+
+  if (!form.storageLocation || form.storageLocation.trim() === '') {
+    missingFields.push('存放位置')
+  }
+
+  if (missingFields.length > 0) {
+    alert('請填寫必填欄位：' + missingFields.join('、'))
+    message.value = '請填寫必填欄位：' + missingFields.join('、')
+    return
+  }
+
   try {
-    await addReagent(form)
-    message.value = '新增成功'
+    await addReagent({
+      reagentName: form.reagentName,
+      lotNo: form.lotNo,
+      quantity: Number(form.quantity),
+      unit: form.unit,
+      expiryDate: form.expiryDate,
+      storageLocation: form.storageLocation
+    })
+
+    message.value = '試劑入庫成功'
 
     form.reagentName = ''
     form.lotNo = ''
@@ -90,7 +130,8 @@ async function submitForm() {
     await loadReagents()
   } catch (error) {
     console.error(error)
-    message.value = '新增失敗，請確認後端 API 是否正常'
+    alert('試劑入庫失敗')
+    message.value = '試劑入庫失敗'
   }
 }
 async function submitUseReagent(id: number) {
