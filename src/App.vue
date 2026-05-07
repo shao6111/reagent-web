@@ -196,6 +196,29 @@ onMounted(() => {
 
         <div class="table-wrapper">
           <table>
+            <div class="table-wrapper">
+  <table>
+    <colgroup v-if="currentPage === 'use'">
+      <col style="width: 18%" />
+      <col style="width: 14%" />
+      <col style="width: 7%" />
+      <col style="width: 10%" />
+      <col style="width: 12%" />
+      <col style="width: 7%" />
+      <col style="width: 8%" />
+      <col style="width: 14%" />
+      <col style="width: 10%" />
+    </colgroup>
+
+    <colgroup v-else>
+      <col style="width: 24%" />
+      <col style="width: 18%" />
+      <col style="width: 10%" />
+      <col style="width: 12%" />
+      <col style="width: 14%" />
+      <col style="width: 10%" />
+      <col style="width: 12%" />
+    </colgroup>
             <thead>
               <tr>
                 <th>試劑名稱</th>
@@ -418,7 +441,7 @@ button:hover {
 
 .table-wrapper {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 table {
@@ -430,9 +453,13 @@ table {
 th,
 td {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 6px 4px;
   text-align: center;
-  white-space: nowrap;
+  vertical-align: middle;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-size: 14px;
 }
 
 th {
@@ -658,4 +685,20 @@ select {
   margin: 8px auto 16px auto;
   background: #2f80ed;
 }
+
+.use-input {
+  width: 100%;
+  max-width: 90px;
+  box-sizing: border-box;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.use-button {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
 </style>
