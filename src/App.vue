@@ -198,7 +198,6 @@ onMounted(() => {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>試劑名稱</th>
                 <th>批號</th>
                 <th>庫存</th>
@@ -213,14 +212,12 @@ onMounted(() => {
 
             <tbody>
               <tr v-for="item in sortedReagents" :key="item.reagentId">
-                <td>{{ item.reagentId }}</td>
                 <td>{{ item.reagentName }}</td>
                 <td>{{ item.lotNo }}</td>
                 <td>{{ item.quantity }}</td>
                 <td>{{ item.unit }}</td>
                 <td>{{ item.expiryDate }}</td>
                 <td>{{ item.storageLocation }}</td>
-
 <td>
   <span :class="getStatusClass(item.expiryDate, item.quantity)">
     {{ getStatus(item.expiryDate, item.quantity) }}
