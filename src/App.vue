@@ -265,9 +265,6 @@ onMounted(() => {
     placeholder="輸入新的試劑名稱"
   />
 
-  <button class="add-name-button" @click="addNewReagentName">
-    加入下拉選單
-  </button>
 </div>
 
           <label>批號</label>
