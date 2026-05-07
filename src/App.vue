@@ -143,18 +143,18 @@ onMounted(() => {
     返回首頁
   </button>
 
-  <div class="form">
-        <div class="form">
-          <label>試劑名稱</label>
-  <option value="">請選擇試劑名稱</option>
-  <option
-    v-for="name in reagentNameOptions"
-    :key="name"
-    :value="name"
-  >
-    {{ name }}
-  </option>
-</select>
+    <div class="form">
+    <label>試劑名稱</label>
+    <select v-model="form.reagentName">
+      <option value="">請選擇試劑名稱</option>
+      <option
+        v-for="name in reagentNameOptions"
+        :key="name"
+        :value="name"
+      >
+        {{ name }}
+      </option>
+    </select>
 
           <label>批號</label>
           <input v-model="form.lotNo" type="text" placeholder="例如 LOT6026BK2AC/1" />
@@ -285,7 +285,6 @@ onMounted(() => {
             目前沒有試劑資料
           </div>
         </div>
-      </section>
     </div>
   </div>
 </template>
