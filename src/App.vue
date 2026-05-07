@@ -140,8 +140,8 @@ onMounted(() => {
 
       <button class="menu-button" @click="currentPage = 'use'">
       使用試劑 / 扣庫存
-      </button>
-</section>
+      </button>  
+      </section>
 
 <button
   v-if="currentPage !== 'home'"
@@ -196,29 +196,27 @@ onMounted(() => {
 
         <div class="table-wrapper">
           <table>
-            <div class="table-wrapper">
-  <table>
-    <colgroup v-if="currentPage === 'use'">
-      <col style="width: 18%" />
-      <col style="width: 14%" />
-      <col style="width: 7%" />
-      <col style="width: 10%" />
-      <col style="width: 12%" />
-      <col style="width: 7%" />
-      <col style="width: 8%" />
-      <col style="width: 14%" />
-      <col style="width: 10%" />
-    </colgroup>
+           <colgroup v-if="currentPage === 'use'">
+            <col style="width: 18%" />
+            <col style="width: 14%" />
+            <col style="width: 7%" />
+            <col style="width: 10%" />
+            <col style="width: 12%" />
+            <col style="width: 7%" />
+            <col style="width: 8%" />
+            <col style="width: 14%" />
+            <col style="width: 10%" />
+           </colgroup>
 
-    <colgroup v-else>
-      <col style="width: 24%" />
-      <col style="width: 18%" />
-      <col style="width: 10%" />
-      <col style="width: 12%" />
-      <col style="width: 14%" />
-      <col style="width: 10%" />
-      <col style="width: 12%" />
-    </colgroup>
+           <colgroup v-else>
+           <col style="width: 24%" />
+           <col style="width: 18%" />
+           <col style="width: 10%" />
+           <col style="width: 12%" />
+           <col style="width: 14%" />
+           <col style="width: 10%" />
+           <col style="width: 12%" />
+           </colgroup>
             <thead>
               <tr>
                 <th>試劑名稱</th>
