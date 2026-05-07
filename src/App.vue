@@ -137,20 +137,6 @@ onMounted(() => {
       </button>
 </section>
 
-<section v-if="currentPage === 'home'" class="home-menu">
-  <button class="menu-button" @click="currentPage = 'add'">
-    新增試劑
-  </button>
-
-  <button class="menu-button" @click="currentPage = 'list'">
-    試劑庫存列表
-  </button>
-
-  <button class="menu-button" @click="currentPage = 'use'">
-    使用試劑 / 扣庫存
-  </button>
-</section>
-
 <button
   v-if="currentPage !== 'home'"
   class="back-button top-back-button"
@@ -158,6 +144,7 @@ onMounted(() => {
 >
   返回首頁
 </button>
+
         <section v-if="currentPage === 'add'" class="card form-card">
   <h2>新增試劑</h2>
 
@@ -200,9 +187,6 @@ onMounted(() => {
   {{ currentPage === 'use' ? '使用試劑 / 扣庫存' : '試劑庫存列表' }}
 </h2>
 
-<button class="back-button" @click="currentPage = 'home'">
-  返回首頁
-</button>
 
         <div class="table-wrapper">
           <table>
