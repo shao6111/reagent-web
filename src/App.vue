@@ -136,8 +136,6 @@ onMounted(() => {
       使用試劑 / 扣庫存
       </button>
 </section>
-      <section v-if="currentPage === 'add'" class="card form-card"></section>
-        <h2>新增試劑</h2>
         <section v-if="currentPage === 'add'" class="card form-card">
   <h2>新增試劑</h2>
 
@@ -148,7 +146,6 @@ onMounted(() => {
   <div class="form">
         <div class="form">
           <label>試劑名稱</label>
-<select v-model="form.reagentName">
   <option value="">請選擇試劑名稱</option>
   <option
     v-for="name in reagentNameOptions"
