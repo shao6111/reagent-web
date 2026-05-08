@@ -414,6 +414,13 @@ onMounted(() => {
                 使用試劑
               </button>
             </div>
+
+           <div v-else class="use-area">
+  <button class="delete-button" @click="handleDeleteReagent(item.reagentId)">
+    刪除
+  </button>
+</div>
+
           </div>
           <div v-if="reagents.length === 0" class="empty-card">
             目前沒有試劑資料
