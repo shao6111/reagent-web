@@ -560,18 +560,19 @@ table {
   width: 100%;
   border-collapse: collapse;
   background: white;
+  font-size: 26px;
 }
 
 th,
 td {
   border: 1px solid #ccc;
-  padding: 6px 4px;
+  padding: 28px 18px;
   text-align: center;
   vertical-align: middle;
   white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
-  font-size: 14px;
+  font-size: 26px;
 }
 
 th {
