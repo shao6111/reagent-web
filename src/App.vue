@@ -860,4 +860,32 @@ td {
   font-size: 12px;
 }
 
+/* 試劑庫存列表標題 */
+.table-wrapper h2,
+.inventory-title {
+  font-size: 44px !important;
+  font-weight: 600 !important;
+}
+
+/* 試劑庫存列表表格字體 */
+.table-wrapper table {
+  font-size: 28px !important;
+}
+
+.table-wrapper th,
+.table-wrapper td {
+  font-size: 28px !important;
+  padding: 30px 20px !important;
+  line-height: 1.6 !important;
+}
+
+/* 狀態文字也放大 */
+.status-normal,
+.status-warning,
+.status-danger,
+.status-expired {
+  font-size: 28px !important;
+  font-weight: 600 !important;
+}
+
 </style>
