@@ -909,4 +909,50 @@ td {
   font-weight: 600 !important;
 }
 
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 32px !important;
+  }
+
+  h2 {
+    font-size: 28px !important;
+  }
+
+  .reagent-card {
+    padding: 18px !important;
+  }
+
+  .card-header h3 {
+    font-size: 24px !important;
+  }
+
+  .lot {
+    font-size: 18px !important;
+  }
+
+  .card-info p {
+    font-size: 20px !important;
+  }
+
+  .status-normal,
+  .status-yellow,
+  .status-orange,
+  .status-red,
+  .status-muted {
+    font-size: 26px !important;
+  }
+
+  .use-button,
+  .delete-button {
+    font-size: 20px !important;
+    padding: 12px 10px !important;
+  }
+
+  .top-back-button,
+  .home-menu .menu-button {
+    font-size: 20px !important;
+    padding: 14px 16px !important;
+  }
+}
+
 </style>
