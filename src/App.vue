@@ -8,6 +8,17 @@ const useAmounts = reactive<Record<number, number>>({})
 
 const sortedReagents = computed(() => {
   return [...reagents.value].sort((a, b) => {
+    const statusA = getStatus(a.expiryDate, a.quantity)
+    const statusB = getStatus(b.expiryDate, b.quantity)
+
+    if (statusA === '已用完' && statusB !== '已用完') {
+      return 1
+    }
+
+    if (statusA !== '已用完' && statusB === '已用完') {
+      return -1
+    }
+
     return String(a.reagentName || '').localeCompare(String(b.reagentName || ''), 'en')
   })
 })
