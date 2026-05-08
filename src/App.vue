@@ -955,49 +955,29 @@ td {
   }
 }
 
-.home-menu {
-  display: flex;
-  flex-direction: column !important;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
 
-.home-menu .menu-button {
-  width: 80% !important;
-  max-width: 280px;
-  min-width: 0 !important;
-  font-size: 24px !important;
-  padding: 16px 20px !important;
-  text-align: center;
-}
 
-h1 {
-  font-size: 34px !important;
-}
 
-h2 {
-  font-size: 28px !important;
-}
+@media screen and (max-width: 768px) {
+  .home-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: nowrap !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
 
-.top-back-button {
-  font-size: 22px !important;
-  padding: 14px 20px !important;
-}
-
-label {
-  font-size: 22px !important;
-}
-
-input,
-select {
-  font-size: 20px !important;
-  padding: 12px !important;
-}
-
-button {
-  font-size: 20px !important;
+  .home-menu .menu-button {
+    display: block !important;
+    width: 80% !important;
+    max-width: 280px !important;
+    min-width: 0 !important;
+    font-size: 24px !important;
+    padding: 16px 20px !important;
+    text-align: center !important;
+  }
 }
 
 </style>
