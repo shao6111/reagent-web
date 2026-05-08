@@ -367,11 +367,6 @@ onMounted(() => {
   </button>
 </td>
 
-<td>
-  <button class="use-button" @click="submitUseReagent(item.reagentId)">
-    使用
-  </button>
-</td>
               </tr>
 
               <tr v-if="reagents.length === 0">
@@ -618,6 +613,27 @@ th {
 .use-button {
   grid-column: auto;
   padding: 8px 12px;
+
+.delete-button {
+  width: 100%;
+  min-width: 0;
+  padding: 5px 4px;
+  font-size: 12px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background: #b91c1c;
+}
+
+.delete-button:hover {
+  background: #b91c1c;
+}
 }
 
 /* 電腦版先隱藏手機卡片 */
