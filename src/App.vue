@@ -444,7 +444,7 @@ onMounted(() => {
 
 .page {
   min-height: 100vh;
-  padding: 24px 12px;
+  padding: 24px 22px;
   font-family: Arial, "Microsoft JhengHei", sans-serif;
   background: #eef7ff;
   overflow-x: hidden;
@@ -459,12 +459,13 @@ onMounted(() => {
 h1 {
   text-align: center;
   margin-bottom: 28px;
-  font-size: 32px;
+  font-size: 40px;
 }
 
 h2 {
   margin-bottom: 18px;
   text-align: center;
+  font-size: 32px;
 }
 
 .card {
@@ -516,6 +517,7 @@ label {
   display: block;
   font-weight: bold;
   margin-top: 6px;
+  font-size: 24px;
 }
 
 input {
@@ -523,7 +525,7 @@ input {
   padding: 9px;
   border: 1px solid #aaa;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 22px;
 }
 
 button {
