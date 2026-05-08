@@ -282,7 +282,7 @@ onMounted(() => {
         <p class="message">{{ message }}</p>
       </section>
 
-      <section v-if="currentPage === 'list' || currentPage === 'use'" class="card"></section>
+      <section v-if="currentPage === 'list' || currentPage === 'use'" class="card">
         <h2>
   {{ currentPage === 'use' ? '使用試劑 / 扣庫存' : '試劑庫存列表' }}
 </h2>
@@ -309,6 +309,7 @@ onMounted(() => {
            <col style="width: 12%" />
            <col style="width: 14%" />
            <col style="width: 10%" />
+           <col style="width: 12%" />
            <col style="width: 12%" />
            </colgroup>
             <thead>
