@@ -419,6 +419,7 @@ onMounted(() => {
             目前沒有試劑資料
           </div>
         </div>
+      </section>
     </div>
   </div>
 </template>
@@ -614,6 +615,7 @@ th {
 .use-button {
   grid-column: auto;
   padding: 8px 12px;
+}
 
 .delete-button {
   width: 100%;
@@ -630,11 +632,6 @@ th {
 
 .delete-button:hover {
   background: #b91c1c;
-}
-
-.delete-button:hover {
-  background: #b91c1c;
-}
 }
 
 /* 電腦版先隱藏手機卡片 */
@@ -842,7 +839,7 @@ select {
 .table-wrapper {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden !important;
+  overflow-x: auto !important;
 }
 
 table {
