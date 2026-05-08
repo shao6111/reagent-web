@@ -37,3 +37,13 @@ export async function useReagent(id: number, amount: number) {
 
   return await response.json()
 }
+
+export async function deleteReagent(reagentId: number) {
+  const response = await fetch(`${API_BASE_URL}/api/reagents/${reagentId}`, {
+    method: 'DELETE'
+  })
+
+  if (!response.ok) {
+    throw new Error('刪除試劑失敗')
+  }
+}

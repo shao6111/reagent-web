@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { addReagent, getReagents, useReagent } from './api/reagentApi'
+import { addReagent, getReagents, useReagent, deleteReagent } from './api/reagentApi'
 
 const reagents = ref<any[]>([])
 const message = ref('')
@@ -32,30 +32,6 @@ const reagentNameOptions = ref<string[]>(
 
 const newReagentName = ref('')
 
-function addNewReagentName() {
-  const name = newReagentName.value.trim()
-
-  if (!name) {
-    message.value = '請輸入新試劑名稱'
-    return
-  }
-
-  if (reagentNameOptions.value.includes(name)) {
-    message.value = '這個試劑名稱已經存在'
-    form.reagentName = name
-    newReagentName.value = ''
-    return
-  }
-
-  reagentNameOptions.value.push(name)
-  reagentNameOptions.value.sort((a, b) => a.localeCompare(b, 'en'))
-
-  localStorage.setItem('reagentNameOptions', JSON.stringify(reagentNameOptions.value))
-
-  form.reagentName = name
-  newReagentName.value = ''
-  message.value = '已加入新的試劑名稱'
-}
 
 const form = reactive({
   reagentName: '',
@@ -72,6 +48,24 @@ async function loadReagents() {
   } catch (error) {
     console.error(error)
     message.value = '讀取試劑資料失敗，請確認後端是否啟動'
+  }
+}
+
+
+async function handleDeleteReagent(id: number) {
+  const confirmed = confirm('確定要刪除這筆試劑資料嗎？')
+
+  if (!confirmed) {
+    return
+  }
+
+  try {
+    await deleteReagent(id)
+    message.value = '刪除成功'
+    await loadReagents()
+  } catch (error) {
+    console.error(error)
+    message.value = '刪除失敗'
   }
 }
 
@@ -327,7 +321,7 @@ onMounted(() => {
                 <th>位置</th>
                 <th>狀態</th>
                 <th v-if="currentPage === 'use'">使用數量</th>
-                <th v-if="currentPage === 'use'">操作</th>
+                <th>操作</th>
               </tr>
             </thead>
 
@@ -355,7 +349,25 @@ onMounted(() => {
   />
 </td>
 
-<td v-if="currentPage === 'use'">
+<td>
+  <button
+    v-if="currentPage === 'use'"
+    class="use-button"
+    @click="submitUseReagent(item.reagentId)"
+  >
+    使用
+  </button>
+
+  <button
+    v-else
+    class="delete-button"
+    @click="handleDeleteReagent(item.reagentId)"
+  >
+    刪除
+  </button>
+</td>
+
+<td>
   <button class="use-button" @click="submitUseReagent(item.reagentId)">
     使用
   </button>
