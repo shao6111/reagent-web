@@ -286,6 +286,16 @@ onMounted(() => {
 
           <label>存放位置</label>
           <input v-model="form.storageLocation" type="text" placeholder="例如 室溫 / 冷藏冰箱A" />
+          
+          <label>存放位置</label>
+           <select v-model="form.storageLocation">
+            <option value="">請選擇存放位置</option>
+            <option value="室溫">室溫</option>
+            <option value="冷藏冰箱A">冷藏冰箱A</option>
+            <option value="冷藏冰箱B">冷藏冰箱B</option>
+            <option value="冷凍冰箱">冷凍冰箱</A></option>
+            <option value="試劑冰箱">試劑冰箱</option>
+           </select>
 
           <button @click="submitForm">試劑入庫</button>
         </div>
