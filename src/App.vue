@@ -283,9 +283,6 @@ onMounted(() => {
 
           <label>到期日</label>
           <input v-model="form.expiryDate" type="date" />
-
-          <label>存放位置</label>
-          <input v-model="form.storageLocation" type="text" placeholder="例如 室溫 / 冷藏冰箱A" />
           
           <label>存放位置</label>
            <select v-model="form.storageLocation">
