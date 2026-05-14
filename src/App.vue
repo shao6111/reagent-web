@@ -290,10 +290,9 @@ onMounted(() => {
             <option value="室溫">室溫</option>
             <option value="冷藏冰箱A">冷藏冰箱A</option>
             <option value="冷藏冰箱B">冷藏冰箱B</option>
-            <option value="冷凍冰箱">冷凍冰箱</A></option>
+            <option value="冷凍冰箱">冷凍冰箱</option>
             <option value="試劑冰箱">試劑冰箱</option>
-           </select>
-
+      </select>
           <button @click="submitForm">試劑入庫</button>
         </div>
 
