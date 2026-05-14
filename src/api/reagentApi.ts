@@ -1,4 +1,4 @@
-const API_BASE_URL ='https://reagent-api-production.up.railway.app'
+const API_BASE_URL = 'https://reagent-api-7fp3.onrender.com'
 
 export async function getReagents() {
   const response = await fetch(`${API_BASE_URL}/api/reagents`)
