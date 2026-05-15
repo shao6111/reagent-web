@@ -421,20 +421,26 @@ onMounted(() => {
             </div>
 
             <div class="card-info">
-              <p><strong>ID：</strong>{{ item.reagentId }}</p>
               <p><strong>庫存：</strong>{{ item.quantity }} {{ item.unit }}</p>
               <p><strong>到期日：</strong>{{ item.expiryDate }}</p>
               <p><strong>位置：</strong>{{ item.storageLocation }}</p>
             </div>
 
             <div v-if="currentPage === 'use'" class="use-area">
-              <input
-                class="use-input"
-                v-model.number="useAmounts[item.reagentId]"
-                type="number"
-                min="1"
-                placeholder="輸入使用數量"
-              />
+          
+            <select
+  class="use-select"
+  v-model.number="useAmounts[item.reagentId]"
+>
+  <option value="">選擇使用量</option>
+  <option
+    v-for="n in Math.min(10, item.quantity)"
+    :key="n"
+    :value="n"
+  >
+    {{ n }}
+  </option>
+</select>
 
               <button class="use-button" @click="submitUseReagent(item.reagentId)">
                 使用試劑
