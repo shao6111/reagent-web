@@ -333,11 +333,11 @@ onMounted(() => {
               <tr>
                 <th>試劑名稱</th>
                 <th>批號</th>
+                <th>狀態</th>
+                <th>到期日</th>
                 <th>庫存</th>
                 <th>單位</th>
-                <th>到期日</th>
                 <th>位置</th>
-                <th>狀態</th>
                 <th v-if="currentPage === 'use'">使用數量</th>
                 <th>操作</th>
               </tr>
@@ -345,27 +345,36 @@ onMounted(() => {
 
             <tbody>
               <tr v-for="item in sortedReagents" :key="item.reagentId">
-                <td>{{ item.reagentName }}</td>
-                <td>{{ item.lotNo }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.unit }}</td>
-                <td>{{ item.expiryDate }}</td>
-                <td>{{ item.storageLocation }}</td>
-<td>
-  <span :class="getStatusClass(item.expiryDate, item.quantity)">
-    {{ getStatus(item.expiryDate, item.quantity) }}
-  </span>
-</td>
+                
+
+                 <td>{{ item.reagentName }}</td>
+                 <td>{{ item.lotNo }}</td>
+                 <td>
+                   <span :class="getStatusClass(item.expiryDate, item.quantity)">
+                   {{ getStatus(item.expiryDate, item.quantity) }}
+                   </span>
+                  </td>
+                  <td>{{ item.expiryDate }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.unit }}</td>
+                  <td>{{ item.storageLocation }}</td>
 
 <td v-if="currentPage === 'use'">
-  <input
-    class="use-input"
+  <select
+    class="use-select"
     v-model.number="useAmounts[item.reagentId]"
-    type="number"
-    min="1"
-    placeholder="數量"
-  />
+  >
+    <option value="">選擇使用量</option>
+    <option
+      v-for="n in Math.min(10, item.quantity)"
+      :key="n"
+      :value="n"
+    >
+      {{ n }}
+    </option>
+  </select>
 </td>
+
 
 <td>
   <button
@@ -845,11 +854,14 @@ select {
   font-size: 14px;
 }
 
-.use-button {
-  width: 100%;
-  min-width: 0;
-  padding: 6px 8px;
-  font-size: 14px;
+ .use-button {
+  width: 60%;
+  max-width: 220px;
+  padding: 10px 14px;
+  font-size: 22px;
+  border-radius: 10px;
+  margin: 10px auto 0;
+  display: block;
 }
 
 /* 強制表格塞進同一個畫面，不出現橫向滑桿 */
