@@ -323,14 +323,18 @@ onMounted(() => {
   </option>
 </select>
 
-    <label>新增試劑名稱</label>
+    <label>新增品項名稱</label>
 <div class="new-reagent-name-row">
   <input
     class="new-reagent-input"
     v-model="newReagentName"
     type="text"
-    placeholder="輸入新的試劑名稱"
+    placeholder="若品項名稱沒有資料，請在這裡新增"
   />
+    
+    <p class="form-hint">
+  若上方品項名稱沒有需要的項目，請在此輸入新的品項名稱，入庫成功後下次會出現在該類別中。
+</p>
 
 </div>
 
@@ -1131,6 +1135,13 @@ select {
   outline: none;
   border-color: #d6b84f;
   box-shadow: 0 0 0 3px rgba(230, 211, 138, 0.35);
+}
+
+.form-hint {
+  margin: -2px 0 8px;
+  color: #6b7280;
+  font-size: 15px;
+  text-align: center;
 }
 
 </style>
