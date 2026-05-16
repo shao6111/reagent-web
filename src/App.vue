@@ -303,7 +303,7 @@ onMounted(() => {
             <option value="冷凍冰箱">冷凍冰箱</option>
             <option value="試劑冰箱">試劑冰箱</option>
       </select>
-          <button @click="submitForm">試劑入庫</button>
+          <button class="submit-button" @click="submitForm">試劑入庫</button>
         </div>
 
         <p class="message">{{ message }}</p>
@@ -1060,5 +1060,14 @@ select {
   }
 }
 
+.submit-button {
+  background: #cfe7ff;
+  color: #1f4f75;
+  border: 1px solid #9cccf5;
+}
+
+.submit-button:hover {
+  background: #bdddfb;
+}
 
 </style>
