@@ -305,103 +305,85 @@ onMounted(() => {
 </h2>
 
 
+        
         <div class="table-wrapper">
-          <table>
-           <colgroup v-if="currentPage === 'use'">
-            <col style="width: 18%" />
-            <col style="width: 14%" />
-            <col style="width: 7%" />
-            <col style="width: 10%" />
-            <col style="width: 12%" />
-            <col style="width: 7%" />
-            <col style="width: 8%" />
-            <col style="width: 14%" />
-            <col style="width: 10%" />
-           </colgroup>
+  <table class="reagent-table">
+    <thead>
+      <tr>
+        <th>試劑資訊</th>
+        <th>到期與狀態</th>
+        <th>庫存</th>
+        <th>位置</th>
+        <th v-if="currentPage === 'use'">使用數量</th>
+        <th>操作</th>
+      </tr>
+    </thead>
 
-           <colgroup v-else>
-           <col style="width: 20%" />
-           <col style="width: 14%" />
-           <col style="width: 8%" />
-           <col style="width: 9%" />
-           <col style="width: 13%" />
-           <col style="width: 9%" />
-           <col style="width: 12%" />
-           <col style="width: 15%" />
-           </colgroup>
-            <thead>
-              <tr>
-                <th>試劑名稱</th>
-                <th>批號</th>
-                <th>狀態</th>
-                <th>到期日</th>
-                <th>庫存</th>
-                <th>單位</th>
-                <th>位置</th>
-                <th v-if="currentPage === 'use'">使用數量</th>
-                <th>操作</th>
-              </tr>
-            </thead>
+    <tbody>
+      <tr v-for="item in sortedReagents" :key="item.reagentId">
+        <td class="reagent-main">
+          <div class="reagent-name">{{ item.reagentName }}</div>
+          <div class="reagent-lot">批號：{{ item.lotNo }}</div>
+        </td>
 
-            <tbody>
-              <tr v-for="item in sortedReagents" :key="item.reagentId">
-                
+        <td>
+          <div class="expiry-date">{{ item.expiryDate }}</div>
+          <span class="status-badge" :class="getStatusClass(item.expiryDate, item.quantity)">
+            {{ getStatus(item.expiryDate, item.quantity) }}
+          </span>
+        </td>
 
-                 <td>{{ item.reagentName }}</td>
-                 <td>{{ item.lotNo }}</td>
-                 <td>
-                   <span :class="getStatusClass(item.expiryDate, item.quantity)">
-                   {{ getStatus(item.expiryDate, item.quantity) }}
-                   </span>
-                  </td>
-                  <td>{{ item.expiryDate }}</td>
-                  <td>{{ item.quantity }}</td>
-                  <td>{{ item.unit }}</td>
-                  <td>{{ item.storageLocation }}</td>
+        <td class="stock-text">
+          {{ item.quantity }} {{ item.unit }}
+        </td>
 
-<td v-if="currentPage === 'use'">
-  <select
-    class="use-select"
-    v-model.number="useAmounts[item.reagentId]"
-  >
-    <option value="">選擇使用量</option>
-    <option
-      v-for="n in 10"
-      :key="n"
-      :value="n"
-    >
-      {{ n }}
-    </option>
-  </select>
-</td>
+        <td>
+          {{ item.storageLocation }}
+        </td>
 
+        <td v-if="currentPage === 'use'">
+          <select
+            class="use-select"
+            v-model.number="useAmounts[item.reagentId]"
+          >
+            <option value="">選擇使用量</option>
+            <option
+              v-for="n in 10"
+              :key="n"
+              :value="n"
+            >
+              {{ n }}
+            </option>
+          </select>
+        </td>
 
-<td>
-  <button
-    v-if="currentPage === 'use'"
-    class="use-button"
-    @click="submitUseReagent(item.reagentId)"
-  >
-    使用
-  </button>
+        <td>
+          <button
+            v-if="currentPage === 'use'"
+            class="use-button"
+            @click="submitUseReagent(item.reagentId)"
+          >
+            使用
+          </button>
 
-  <button
-    v-else
-    class="delete-button"
-    @click="handleDeleteReagent(item.reagentId)"
-  >
-    刪除
-  </button>
-</td>
+          <button
+            v-else
+            class="delete-button"
+            @click="handleDeleteReagent(item.reagentId)"
+          >
+            刪除
+          </button>
+        </td>
+      </tr>
 
-              </tr>
-
-              <tr v-if="reagents.length === 0">
-                <td colspan="8" class="empty">目前沒有試劑資料</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <tr v-if="reagents.length === 0">
+        <td :colspan="currentPage === 'use' ? 6 : 5" class="empty">
+          目前沒有試劑資料
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>    
 
         <div class="mobile-card-list">
           <div
@@ -589,58 +571,106 @@ button:hover {
 
 .table-wrapper {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
-table {
+.reagent-table {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
-  font-size: 26px;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  background: transparent;
+  table-layout: fixed;
 }
 
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 28px 18px;
+.reagent-table thead th {
+  background: #fff4e6;
+  color: #4b5563;
+  font-size: 18px;
+  padding: 14px 10px;
+  border: none;
+}
+
+.reagent-table tbody tr {
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.reagent-table td {
+  border: none;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 18px 12px;
   text-align: center;
   vertical-align: middle;
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  font-size: 26px;
+  font-size: 18px;
+  color: #4b5563;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
-th {
-  background: #fff4e6;
+.reagent-main {
+  text-align: left !important;
+}
+
+.reagent-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.reagent-lot {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.expiry-date {
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.stock-text {
+  font-size: 22px !important;
+  font-weight: bold;
+  color: #1f2937 !important;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .status-normal {
-  color: green;
-  font-weight: bold;
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .status-warning,
 .status-yellow {
-  color: #d6a100;
-  font-weight: bold;
+  background: #fef3c7;
+  color: #b45309;
 }
 
 .status-orange {
-  color: #f28c28;
-  font-weight: bold;
+  background: #ffedd5;
+  color: #c2410c;
 }
 
 .status-danger,
 .status-red {
-  color: red;
-  font-weight: bold;
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .status-muted {
-  color: gray;
-  font-weight: bold;
+  background: #e5e7eb;
+  color: #6b7280;
 }
+
 
 .empty {
   text-align: center;
@@ -860,63 +890,11 @@ select {
   display: block;
 }
 
-/* 強制表格塞進同一個畫面，不出現橫向滑桿 */
-.card {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.table-wrapper {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto !important;
-}
-
-table {
-  width: 100%;
-  max-width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 4px 2px;
-  font-size: 12px;
-  white-space: normal !important;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  text-align: center;
-}
-
 
 /* 試劑庫存列表標題 */
 .table-wrapper h2,
 .inventory-title {
   font-size: 44px !important;
-  font-weight: 600 !important;
-}
-
-/* 試劑庫存列表表格字體 */
-.table-wrapper table {
-  font-size: 28px !important;
-}
-
-.table-wrapper th,
-.table-wrapper td {
-  font-size: 28px !important;
-  padding: 30px 20px !important;
-  line-height: 1.6 !important;
-}
-
-/* 狀態文字也放大 */
-.status-normal,
-.status-warning,
-.status-danger,
-.status-expired {
-  font-size: 28px !important;
   font-weight: 600 !important;
 }
 
