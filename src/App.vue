@@ -1018,6 +1018,13 @@ select {
   border-radius: 10px !important;
   margin: 10px auto 0 !important;
   display: block !important;
+  background: #cfe7ff !important;
+  color: #1f4f75 !important;
+  border: 1px solid #9cccf5 !important;
+}
+
+.use-area .use-button:hover {
+  background: #bdddfb !important;
 }
 
 .home-section {
