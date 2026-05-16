@@ -224,19 +224,29 @@ onMounted(() => {
     <div class="container">
       <h1>試劑管理系統</h1>
 
-      <section v-if="currentPage === 'home'" class="home-menu">
-       <button class="menu-button" @click="currentPage = 'add'">
-       試劑入庫
-       </button>
+     <section v-if="currentPage === 'home'" class="home-section">
+  <div class="home-menu">
+    <button class="menu-button" @click="currentPage = 'add'">
+      試劑入庫
+    </button>
 
-      <button class="menu-button" @click="currentPage = 'list'">
+    <button class="menu-button" @click="currentPage = 'list'">
       試劑庫存列表
-      </button>
+    </button>
 
-      <button class="menu-button" @click="currentPage = 'use'">
+    <button class="menu-button" @click="currentPage = 'use'">
       使用試劑 / 扣庫存
-      </button>  
-      </section>
+    </button>
+  </div>
+
+  <div class="home-image-wrap">
+    <img
+      src="/reagent.png"
+      alt="試劑圖片"
+      class="home-image"
+    />
+  </div>
+</section> 
 
 <button
   v-if="currentPage !== 'home'"
@@ -1001,6 +1011,39 @@ select {
   border-radius: 10px !important;
   margin: 10px auto 0 !important;
   display: block !important;
+}
+
+.home-section {
+  width: 100%;
+}
+
+.home-image-wrap {
+  margin-top: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-image {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  border-radius: 20px;
+  background: white;
+  padding: 14px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+@media screen and (max-width: 768px) {
+  .home-image-wrap {
+    margin-top: 28px;
+  }
+
+  .home-image {
+    max-width: 88%;
+    padding: 10px;
+    border-radius: 16px;
+  }
 }
 
 </style>
