@@ -284,7 +284,7 @@ onMounted(() => {
 </div>
 
           <label>批號</label>
-          <input v-model="form.lotNo" type="text" placeholder="例如 LOT6026BK2AC/1" />
+          <input v-model="form.lotNo" type="text" placeholder="例如  6026BK2AC/1" />
 
           <label>數量</label>
           <input v-model.number="form.quantity" type="number" />
