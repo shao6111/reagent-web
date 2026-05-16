@@ -366,7 +366,7 @@ onMounted(() => {
   >
     <option value="">選擇使用量</option>
     <option
-      v-for="n in Math.min(10, item.quantity)"
+      v-for="n in 10"
       :key="n"
       :value="n"
     >
@@ -434,7 +434,7 @@ onMounted(() => {
 >
   <option value="">選擇使用量</option>
   <option
-    v-for="n in Math.min(10, item.quantity)"
+    v-for="n in 10"
     :key="n"
     :value="n"
   >
@@ -750,19 +750,20 @@ th {
   }
 
   .reagent-card {
-    width: 100%;
-    max-width: 100%;
-    background: #fff4e6;
-    border: 1px solid #f1d1a6;
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 12px;
-  }
+  width: 100%;
+  max-width: 100%;
+  background: #fff4e6;
+  border: 1px solid #f1d1a6;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+}
 
   .card-header {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 6px;
     margin-bottom: 10px;
   }
@@ -792,17 +793,12 @@ th {
   .use-area {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
     margin-top: 12px;
   }
 
-  .use-input {
-    width: 100%;
-  }
-
-  .use-button {
-    width: 100%;
-  }
 
   .empty-card {
     width: 100%;
@@ -852,13 +848,7 @@ select {
   background: #2f80ed;
 }
 
-.use-input {
-  width: 100%;
-  max-width: 90px;
-  box-sizing: border-box;
-  padding: 6px;
-  font-size: 14px;
-}
+
 
  .use-button {
   width: 60%;
@@ -901,20 +891,6 @@ td {
   text-align: center;
 }
 
-.use-input {
-  width: 100%;
-  max-width: 65px;
-  padding: 4px;
-  font-size: 12px;
-  box-sizing: border-box;
-}
-
-.use-button {
-  width: 100%;
-  min-width: 0;
-  padding: 5px 4px;
-  font-size: 12px;
-}
 
 /* 試劑庫存列表標題 */
 .table-wrapper h2,
@@ -1013,6 +989,40 @@ td {
     padding: 16px 20px !important;
     text-align: center !important;
   }
+}
+
+  .use-select {
+  width: 180px !important;
+  max-width: 80% !important;
+  padding: 10px 12px !important;
+  font-size: 20px !important;
+  border: 2px solid #bbb !important;
+  border-radius: 10px !important;
+  text-align: center !important;
+  text-align-last: center !important;
+  background-color: white !important;
+  margin: 10px auto 14px !important;
+  display: block !important;
+}
+
+.use-area {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+}
+
+.use-area .use-button {
+  width: 60% !important;
+  max-width: 220px !important;
+  min-width: 0 !important;
+  padding: 10px 14px !important;
+  font-size: 22px !important;
+  border-radius: 10px !important;
+  margin: 10px auto 0 !important;
+  display: block !important;
 }
 
 </style>
