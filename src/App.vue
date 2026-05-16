@@ -25,26 +25,46 @@ const sortedReagents = computed(() => {
 
 const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
 
-const defaultReagentNames = [
-  'FS pneumoniae Ag',
-  'Influenza A/B Ag',
-  'COVID-19 Ag',
-  'RSV Ag',
-  'Legionella Ag'
-]
+const defaultReagentOptionsByCategory = {
+  試劑: [
+    'FS pneumoniae Ag',
+    'Influenza A/B Ag',
+    'COVID-19 Ag',
+    'RSV Ag',
+    'Legionella Ag'
+  ],
+  品管: [
+    'Positive Control',
+    'Negative Control'
+  ],
+  校正液: [
+    'CAL-1',
+    'CAL-2',
+    'CAL-3'
+  ]
+}
 
-const savedReagentNames = localStorage.getItem('reagentNameOptions')
+const savedReagentOptionsByCategory = localStorage.getItem('reagentOptionsByCategory')
 
-const reagentNameOptions = ref<string[]>(
-  savedReagentNames
-    ? JSON.parse(savedReagentNames)
-    : [...defaultReagentNames].sort((a, b) => a.localeCompare(b, 'en'))
+const reagentOptionsByCategory = ref<Record<string, string[]>>(
+  savedReagentOptionsByCategory
+    ? JSON.parse(savedReagentOptionsByCategory)
+    : defaultReagentOptionsByCategory
 )
+
+const currentReagentNameOptions = computed(() => {
+  if (!form.reagentCategory) {
+    return []
+  }
+
+  return reagentOptionsByCategory.value[form.reagentCategory] || []
+})
 
 const newReagentName = ref('')
 
 
 const form = reactive({
+  reagentCategory: '',
   reagentName: '',
   lotNo: '',
   quantity: 0,
@@ -86,6 +106,10 @@ async function submitForm() {
   const selectedReagentName = form.reagentName.trim()
   const typedReagentName = newReagentName.value.trim()
   const stockInReagentName = typedReagentName || selectedReagentName
+  
+ if (!form.reagentCategory) {
+  missingFields.push('試劑類別')
+}
 
   if (!stockInReagentName) {
     missingFields.push('試劑名稱或新增試劑名稱')
@@ -118,11 +142,23 @@ async function submitForm() {
   }
 
   try {
-    if (typedReagentName && !reagentNameOptions.value.includes(typedReagentName)) {
-      reagentNameOptions.value.push(typedReagentName)
-      reagentNameOptions.value.sort((a, b) => a.localeCompare(b, 'en'))
-      localStorage.setItem('reagentNameOptions', JSON.stringify(reagentNameOptions.value))
-    }
+    if (typedReagentName) {
+  const category = form.reagentCategory
+
+  if (!reagentOptionsByCategory.value[category]) {
+    reagentOptionsByCategory.value[category] = []
+  }
+
+  if (!reagentOptionsByCategory.value[category].includes(typedReagentName)) {
+    reagentOptionsByCategory.value[category].push(typedReagentName)
+    reagentOptionsByCategory.value[category].sort((a, b) => a.localeCompare(b, 'en'))
+
+    localStorage.setItem(
+      'reagentOptionsByCategory',
+      JSON.stringify(reagentOptionsByCategory.value)
+    )
+  }
+}
 
     await addReagent({
       reagentName: stockInReagentName,
@@ -135,13 +171,14 @@ async function submitForm() {
 
     message.value = '試劑入庫成功'
 
-    form.reagentName = ''
-    form.lotNo = ''
-    form.quantity = 0
-    form.unit = '盒'
-    form.expiryDate = ''
-    form.storageLocation = ''
-    newReagentName.value = ''
+    form.reagentCategory = ''
+form.reagentName = ''
+form.lotNo = ''
+form.quantity = 0
+form.unit = '盒'
+form.expiryDate = ''
+form.storageLocation = ''
+newReagentName.value = ''
 
     await loadReagents()
   } catch (error) {
@@ -260,17 +297,31 @@ onMounted(() => {
   <h2>試劑入庫</h2>
 
     <div class="form">
-    <label>試劑名稱</label>
-    <select v-model="form.reagentName">
-      <option value="">請選擇試劑名稱</option>
-      <option
-        v-for="name in reagentNameOptions"
-        :key="name"
-        :value="name"
-      >
-        {{ name }}
-      </option>
-    </select>
+    <label>類別</label>
+<select
+  v-model="form.reagentCategory"
+  @change="form.reagentName = ''"
+>
+  <option value="">請選擇類別</option>
+  <option value="試劑">試劑</option>
+  <option value="品管">品管</option>
+  <option value="校正液">校正液</option>
+</select>
+
+<label>品項名稱</label>
+<select
+  v-model="form.reagentName"
+  :disabled="!form.reagentCategory"
+>
+  <option value="">請先選擇類別後，再選擇品項</option>
+  <option
+    v-for="name in currentReagentNameOptions"
+    :key="name"
+    :value="name"
+  >
+    {{ name }}
+  </option>
+</select>
 
     <label>新增試劑名稱</label>
 <div class="new-reagent-name-row">
