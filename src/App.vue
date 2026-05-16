@@ -234,7 +234,7 @@ onMounted(() => {
       試劑庫存列表
     </button>
     
-    <button class="menu-button" @click="currentPage = 'use'"></button>
+    <button class="menu-button" @click="currentPage = 'use'">
   使用試劑 / 扣庫存
 </button>
   </div>
