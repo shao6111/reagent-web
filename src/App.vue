@@ -234,7 +234,7 @@ onMounted(() => {
       試劑庫存列表
     </button>
     
-    <button class="menu-button use-menu-button" @click="currentPage = 'use'">
+    <button class="menu-button" @click="currentPage = 'use'"></button>
   使用試劑 / 扣庫存
 </button>
   </div>
@@ -694,6 +694,13 @@ button:hover {
 .use-button {
   grid-column: auto;
   padding: 8px 12px;
+  background: #cfe7ff;
+  color: #1f4f75;
+  border: 1px solid #9cccf5;
+}
+
+.use-button:hover {
+  background: #bdddfb;
 }
 
 .delete-button {
@@ -1046,14 +1053,5 @@ select {
   }
 }
 
-.home-menu .use-menu-button {
-  background: #d7ecff;
-  border-color: #9cccf5;
-  color: #1f4f75;
-}
-
-.home-menu .use-menu-button:hover {
-  background: #c4e3fb;
-}
 
 </style>
