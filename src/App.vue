@@ -275,6 +275,7 @@ onMounted(() => {
     <label>新增試劑名稱</label>
 <div class="new-reagent-name-row">
   <input
+    class="new-reagent-input"
     v-model="newReagentName"
     type="text"
     placeholder="輸入新的試劑名稱"
@@ -1068,6 +1069,17 @@ select {
 
 .submit-button:hover {
   background: #bdddfb;
+}
+
+.new-reagent-input {
+  background: #fff4cc;
+  border: 2px solid #e6d38a;
+}
+
+.new-reagent-input:focus {
+  outline: none;
+  border-color: #d6b84f;
+  box-shadow: 0 0 0 3px rgba(230, 211, 138, 0.35);
 }
 
 </style>
