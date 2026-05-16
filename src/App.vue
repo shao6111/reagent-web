@@ -11,12 +11,27 @@ const sortedReagents = computed(() => {
     const statusA = getStatus(a.expiryDate, a.quantity)
     const statusB = getStatus(b.expiryDate, b.quantity)
 
-    if (statusA === '已用完' && statusB !== '已用完') {
-      return 1
+    const priorityMap: Record<string, number> = {
+      '已過期': 1,
+      '7天內到期': 2,
+      '30天內到期': 3,
+      '已用完': 4,
+      '未設定': 5,
+      '正常': 6
     }
 
-    if (statusA !== '已用完' && statusB === '已用完') {
-      return -1
+    const priorityA = priorityMap[statusA] || 99
+    const priorityB = priorityMap[statusB] || 99
+
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB
+    }
+
+    const dateA = a.expiryDate ? new Date(a.expiryDate).getTime() : Number.MAX_SAFE_INTEGER
+    const dateB = b.expiryDate ? new Date(b.expiryDate).getTime() : Number.MAX_SAFE_INTEGER
+
+    if (dateA !== dateB) {
+      return dateA - dateB
     }
 
     return String(a.reagentName || '').localeCompare(String(b.reagentName || ''), 'en')
