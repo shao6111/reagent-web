@@ -266,6 +266,17 @@ function getStatusClass(expiryDate: string, quantity: number) {
 
   return 'status-muted'
 }
+
+function getReagentCategory(reagentName: string) {
+  for (const category in reagentOptionsByCategory.value) {
+    if (reagentOptionsByCategory.value[category].includes(reagentName)) {
+      return category
+    }
+  }
+
+  return '未分類'
+}
+
 onMounted(() => {
   loadReagents()
 })
@@ -390,22 +401,30 @@ onMounted(() => {
         <div class="table-wrapper">
   <table class="reagent-table">
     <thead>
-      <tr>
-        <th>試劑資訊</th>
-        <th>到期與狀態</th>
-        <th>庫存</th>
-        <th>位置</th>
-        <th v-if="currentPage === 'use'">使用數量</th>
-        <th>操作</th>
-      </tr>
-    </thead>
+     function getReagentCategory(reagentName: string) {
+  for (const category in reagentOptionsByCategory.value) {
+    if (reagentOptionsByCategory.value[category].includes(reagentName)) {
+      return category
+    }
+  }
 
-    <tbody>
-      <tr v-for="item in sortedReagents" :key="item.reagentId">
-        <td class="reagent-main">
-          <div class="reagent-name">{{ item.reagentName }}</div>
-          <div class="reagent-lot">批號：{{ item.lotNo }}</div>
-        </td>
+  return '未分類'
+}
+   </thead>
+
+<tbody>
+  <tr v-for="item in sortedReagents" :key="item.reagentId">
+    <td>
+      <span class="category-badge">
+        {{ item.reagentCategory || getReagentCategory(item.reagentName) }}
+      </span>
+    </td>
+
+    <td class="reagent-main">
+      <div class="reagent-name">{{ item.reagentName }}</div>
+      <div class="reagent-lot">批號：{{ item.lotNo }}</div>
+    </td>
+      
 
         <td>
           <div class="expiry-date">{{ item.expiryDate }}</div>
@@ -458,7 +477,7 @@ onMounted(() => {
       </tr>
 
       <tr v-if="reagents.length === 0">
-        <td :colspan="currentPage === 'use' ? 6 : 5" class="empty">
+       <td :colspan="currentPage === 'use' ? 7 : 6" class="empty">
           目前沒有試劑資料
         </td>
       </tr>
@@ -473,10 +492,15 @@ onMounted(() => {
             :key="'mobile-' + item.reagentId"
           >
             <div class="card-header">
-              <div>
-                <h3>{{ item.reagentName }}</h3>
-                <p class="lot">批號：{{ item.lotNo }}</p>
-              </div>
+  <div>
+    <span class="category-badge">
+      {{ item.reagentCategory || getReagentCategory(item.reagentName) }}
+    </span>
+
+    <h3>{{ item.reagentName }}</h3>
+    <p class="lot">批號：{{ item.lotNo }}</p>
+  </div>
+            
 
               <span :class="getStatusClass(item.expiryDate, item.quantity)">
                 {{ getStatus(item.expiryDate, item.quantity) }}
@@ -1157,6 +1181,17 @@ select {
   color: #6b7280;
   font-size: 15px;
   text-align: center;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 </style>
