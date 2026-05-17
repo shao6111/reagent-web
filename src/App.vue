@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { addReagent, getReagents, useReagent, deleteReagent } from './api/reagentApi'
+import { addReagent, getReagents, useReagent, deleteReagent, getUsageLogs } from './api/reagentApi'
 
 const reagents = ref<any[]>([])
 const message = ref('')
 const useAmounts = reactive<Record<number, number>>({})
+const usageLogs = ref<any[]>([])
 
 const sortedReagents = computed(() => {
   return [...reagents.value].sort((a, b) => {
@@ -85,6 +86,15 @@ async function loadReagents() {
   } catch (error) {
     console.error(error)
     message.value = '讀取試劑資料失敗，請確認後端是否啟動'
+  }
+}
+
+async function loadUsageLogs() {
+  try {
+    usageLogs.value = await getUsageLogs()
+  } catch (error) {
+    console.error(error)
+    message.value = '讀取扣庫存紀錄失敗'
   }
 }
 
@@ -210,6 +220,7 @@ async function submitUseReagent(id: number) {
     message.value = '使用成功，庫存已更新'
     useAmounts[id] = 0
     await loadReagents()
+    await loadUsageLogs()
   } catch (error) {
     console.error(error)
     message.value = '使用失敗，請確認庫存是否足夠'
@@ -273,6 +284,7 @@ function getReagentCategory(reagentName: string) {
 
 onMounted(() => {
   loadReagents()
+  loadUsageLogs()
 })
 </script>
 
@@ -550,6 +562,41 @@ onMounted(() => {
             目前沒有試劑資料
           </div>
         </div>
+         <div v-if="currentPage === 'use'" class="usage-log-section">
+  <h2 class="usage-log-title">扣庫存紀錄清單</h2>
+
+  <div v-if="usageLogs.length === 0" class="empty-card">
+    目前沒有扣庫存紀錄
+  </div>
+
+  <div v-else class="table-wrapper">
+    <table class="reagent-table">
+      <thead>
+        <tr>
+          <th>使用時間</th>
+          <th>類別</th>
+          <th>品項名稱</th>
+          <th>批號</th>
+          <th>使用數量</th>
+          <th>剩餘庫存</th>
+          <th>位置</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr v-for="log in usageLogs" :key="log.usageLogId">
+          <td>{{ log.usedAt }}</td>
+          <td>{{ log.reagentCategory || '未分類' }}</td>
+          <td>{{ log.reagentName }}</td>
+          <td>{{ log.lotNo }}</td>
+          <td>{{ log.usedQuantity }} {{ log.unit }}</td>
+          <td>{{ log.remainingQuantity }} {{ log.unit }}</td>
+          <td>{{ log.storageLocation }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
       </section>
     </div>
   </div>
@@ -1229,6 +1276,28 @@ select {
   font-size: 18px;
   font-weight: bold;
   vertical-align: middle;
+}
+
+.usage-log-section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.usage-log-title {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.usage-log-section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.usage-log-title {
+  font-size: 28px;
+  margin-bottom: 16px;
 }
 
 </style>

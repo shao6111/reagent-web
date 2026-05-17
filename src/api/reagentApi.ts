@@ -47,3 +47,12 @@ export async function deleteReagent(reagentId: number) {
     throw new Error('刪除試劑失敗')
   }
 }
+export async function getUsageLogs() {
+  const response = await fetch(`${API_BASE_URL}/api/reagents/usage-logs`)
+
+  if (!response.ok) {
+    throw new Error('讀取扣庫存紀錄失敗')
+  }
+
+  return response.json()
+}  
