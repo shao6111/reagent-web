@@ -405,7 +405,7 @@ onMounted(() => {
   <tr v-for="item in sortedReagents" :key="item.reagentId">
     <td>
       <span class="category-badge">
-        {{ item.reagentCategory || getReagentCategory(item.reagentName) }}
+        {{ item.reagentCategory || item.category || getReagentCategory(item.reagentName) }}
       </span>
     </td>
 
@@ -422,10 +422,14 @@ onMounted(() => {
           </span>
         </td>
 
-        <td class="stock-text">
-          {{ item.quantity }} {{ item.unit }}
-        </td>
+        <td
+           class="stock-text"
+           :class="{ 'stock-low': Number(item.quantity) === 1 }"
+           >
 
+  {{ item.quantity }} {{ item.unit }}
+</td>
+ 
         <td>
           {{ item.storageLocation }}
         </td>
@@ -483,7 +487,7 @@ onMounted(() => {
             <div class="card-header">
   <div>
     <span class="category-badge">
-      {{ item.reagentCategory || getReagentCategory(item.reagentName) }}
+  {{ item.reagentCategory || item.category || getReagentCategory(item.reagentName) }}
     </span>
 
     <h3>{{ item.reagentName }}</h3>
@@ -497,7 +501,9 @@ onMounted(() => {
             </div>
 
             <div class="card-info">
-              <p><strong>庫存：</strong>{{ item.quantity }} {{ item.unit }}</p>
+              <p :class="{ 'stock-low': Number(item.quantity) === 1 }">
+                <strong>庫存：</strong>{{ item.quantity }} {{ item.unit }}
+              </p>
               <p><strong>到期日：</strong>{{ item.expiryDate }}</p>
               <p><strong>位置：</strong>{{ item.storageLocation }}</p>
             </div>
@@ -728,6 +734,26 @@ button:hover {
   font-size: 22px !important;
   font-weight: bold;
   color: #1f2937 !important;
+}
+
+.stock-low {
+  color: red !important;
+  font-weight: bold !important;
+  animation: stockBlink 0.8s infinite;
+}
+
+@keyframes stockBlink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .status-badge {
