@@ -41,25 +41,12 @@ const sortedReagents = computed(() => {
 const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
 
 const defaultReagentOptionsByCategory = {
-  試劑: [
-    'FS pneumoniae Ag',
-    'Influenza A/B Ag',
-    'COVID-19 Ag',
-    'RSV Ag',
-    'Legionella Ag'
-  ],
-  品管: [
-    'Positive Control',
-    'Negative Control'
-  ],
-  校正液: [
-    'CAL-1',
-    'CAL-2',
-    'CAL-3'
-  ]
+  試劑: [],
+  品管: [],
+  校正液: []
 }
 
-const savedReagentOptionsByCategory = localStorage.getItem('reagentOptionsByCategory')
+const savedReagentOptionsByCategory = localStorage.getItem('reagentCustomOptionsByCategory')
 
 const reagentOptionsByCategory = ref<Record<string, string[]>>(
   savedReagentOptionsByCategory
@@ -157,7 +144,7 @@ async function submitForm() {
   }
 
   try {
-    if (typedReagentName) {
+  if (typedReagentName) {
   const category = form.reagentCategory
 
   if (!reagentOptionsByCategory.value[category]) {
@@ -169,13 +156,16 @@ async function submitForm() {
     reagentOptionsByCategory.value[category].sort((a, b) => a.localeCompare(b, 'en'))
 
     localStorage.setItem(
-      'reagentOptionsByCategory',
-      JSON.stringify(reagentOptionsByCategory.value)
-    )
+  'reagentCustomOptionsByCategory',
+  JSON.stringify(reagentOptionsByCategory.value)
+)
   }
+
+  form.reagentName = typedReagentName
 }
 
     await addReagent({
+      reagentCategory: form.reagentCategory,
       reagentName: stockInReagentName,
       lotNo: form.lotNo,
       quantity: Number(form.quantity),
@@ -396,21 +386,20 @@ onMounted(() => {
   {{ currentPage === 'use' ? '使用試劑 / 扣庫存' : '試劑庫存列表' }}
 </h2>
 
-
         
         <div class="table-wrapper">
   <table class="reagent-table">
-    <thead>
-     function getReagentCategory(reagentName: string) {
-  for (const category in reagentOptionsByCategory.value) {
-    if (reagentOptionsByCategory.value[category].includes(reagentName)) {
-      return category
-    }
-  }
-
-  return '未分類'
-}
-   </thead>
+     <thead>
+  <tr>
+    <th>類別</th>
+    <th>試劑資訊</th>
+    <th>到期與狀態</th>
+    <th>庫存</th>
+    <th>位置</th>
+    <th v-if="currentPage === 'use'">使用數量</th>
+    <th>操作</th>
+  </tr>
+</thead>
 
 <tbody>
   <tr v-for="item in sortedReagents" :key="item.reagentId">
