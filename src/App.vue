@@ -38,6 +38,10 @@ const sortedReagents = computed(() => {
   })
 })
 
+const lowStockCount = computed(() => {
+  return reagents.value.filter(item => Number(item.quantity) === 1).length
+})
+
 const currentPage = ref<'home' | 'add' | 'list' | 'use'>('home')
 
 const defaultReagentOptionsByCategory = {
@@ -382,11 +386,17 @@ onMounted(() => {
       </section>
 
       <section v-if="currentPage === 'list' || currentPage === 'use'" class="card">
+        
         <h2>
   {{ currentPage === 'use' ? '使用試劑 / 扣庫存' : '試劑庫存列表' }}
-</h2>
 
-        
+  <span
+    v-if="currentPage === 'list' && lowStockCount > 0"
+    class="low-stock-title-count"
+  >
+    庫存剩 1：{{ lowStockCount }} 件
+  </span>
+</h2>   
         <div class="table-wrapper">
   <table class="reagent-table">
      <thead>
@@ -1207,6 +1217,19 @@ select {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 8px;
+}
+
+.low-stock-title-count {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  vertical-align: middle;
+  animation: stockBlink 0.8s infinite;
 }
 
 </style>
