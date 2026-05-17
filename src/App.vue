@@ -1229,7 +1229,6 @@ select {
   font-size: 18px;
   font-weight: bold;
   vertical-align: middle;
-  animation: stockBlink 0.8s infinite;
 }
 
 </style>
