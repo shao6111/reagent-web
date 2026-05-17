@@ -282,6 +282,24 @@ function getReagentCategory(reagentName: string) {
   return '未分類'
 }
 
+function formatUsedAt(usedAt: string) {
+  if (!usedAt) {
+    return ''
+  }
+
+  const date = new Date(usedAt.endsWith('Z') ? usedAt : usedAt + 'Z')
+
+  return date.toLocaleString('zh-TW', {
+    timeZone: 'Asia/Taipei',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  })
+}
 onMounted(() => {
   loadReagents()
   loadUsageLogs()
@@ -585,7 +603,7 @@ onMounted(() => {
 
       <tbody>
         <tr v-for="log in usageLogs" :key="log.usageLogId">
-          <td>{{ log.usedAt }}</td>
+          <td>{{ formatUsedAt(log.usedAt) }}</td>
           <td>{{ log.reagentCategory || '未分類' }}</td>
           <td>{{ log.reagentName }}</td>
           <td>{{ log.lotNo }}</td>
