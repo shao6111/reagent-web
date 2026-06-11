@@ -670,7 +670,7 @@ onMounted(() => {
 </div>
 
 
-  <div v-else class="usage-log-wrapper">
+  <div class="usage-log-wrapper">
     <table class="reagent-table">
       <thead>
         <tr>
