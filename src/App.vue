@@ -25,13 +25,18 @@ async function startScan() {
     async (decodedText) => {
       scanBatchNo.value = decodedText
 
-      const target = reagents.value.find((r) => r.batchNo === decodedText)
-
+      const target = reagents.value.find((r) => r.lotNo === decodedText)
+    
+     
       if (target) {
-        useAmounts[target.id] = 1
-        message.value = `已掃描批號：${decodedText}`
+       useAmounts[target.reagentId] = 1
+       await submitUseReagent(target.reagentId)
+       alert(`已扣除庫存量 1\n批號：${decodedText}`)
       } else {
-        message.value = `找不到批號：${decodedText}`
+        alert(`偵測到新批號：${decodedText}\n請到試劑入庫新增`)
+
+        currentPage.value = 'add'
+        form.lotNo = decodedText
       }
 
       await stopScan()
@@ -1408,6 +1413,38 @@ select {
   width: 300px;
   max-width: 100%;
   margin-top: 12px;
+}
+
+.qr-scan-box {
+  margin: 16px 0;
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  text-align: center;
+}
+
+.scan-button,
+.scan-stop-button {
+  display: block;
+  width: 75%;
+  max-width: 360px;
+  margin: 0 auto 14px auto;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.scan-button {
+  background: #2563eb;
+  color: white;
+}
+
+.scan-stop-button {
+  background: #dc2626;
+  color: white;
 }
 
 </style>
