@@ -10,6 +10,21 @@ const usageLogs = ref<any[]>([])
 const scanBatchNo = ref('')
 const isScanning = ref(false)
 let qrScanner: Html5Qrcode | null = null
+function playBeep() {
+  const audioContext = new AudioContext()
+  const oscillator = audioContext.createOscillator()
+  const gainNode = audioContext.createGain()
+
+  oscillator.connect(gainNode)
+  gainNode.connect(audioContext.destination)
+
+  oscillator.frequency.value = 1000
+  oscillator.type = 'sine'
+  gainNode.gain.value = 0.2
+
+  oscillator.start()
+  oscillator.stop(audioContext.currentTime + 0.15)
+}
 async function startScan() {
   if (qrScanner) return
 
@@ -23,6 +38,7 @@ async function startScan() {
       qrbox: { width: 250, height: 250 }
     },
     async (decodedText) => {
+      playBeep()
       scanBatchNo.value = decodedText
 
       const target = reagents.value.find((r) => r.lotNo === decodedText)
