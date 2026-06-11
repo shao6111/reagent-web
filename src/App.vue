@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Html5Qrcode } from 'html5-qrcode'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { addReagent, getReagents, useReagent, deleteReagent, getUsageLogs } from './api/reagentApi'
 
@@ -6,6 +7,48 @@ const reagents = ref<any[]>([])
 const message = ref('')
 const useAmounts = reactive<Record<number, number>>({})
 const usageLogs = ref<any[]>([])
+const scanBatchNo = ref('')
+const isScanning = ref(false)
+let qrScanner: Html5Qrcode | null = null
+async function startScan() {
+  if (qrScanner) return
+
+  isScanning.value = true
+  qrScanner = new Html5Qrcode('qr-reader')
+
+  await qrScanner.start(
+    { facingMode: 'environment' },
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 250 }
+    },
+    async (decodedText) => {
+      scanBatchNo.value = decodedText
+
+      const target = reagents.value.find((r) => r.batchNo === decodedText)
+
+      if (target) {
+        useAmounts[target.id] = 1
+        message.value = `已掃描批號：${decodedText}`
+      } else {
+        message.value = `找不到批號：${decodedText}`
+      }
+
+      await stopScan()
+    },
+    () => {}
+  )
+}
+
+async function stopScan() {
+  if (qrScanner) {
+    await qrScanner.stop()
+    qrScanner.clear()
+    qrScanner = null
+  }
+
+  isScanning.value = false
+}
 
 const sortedReagents = computed(() => {
   return [...reagents.value].sort((a, b) => {
@@ -427,6 +470,21 @@ onMounted(() => {
     庫存剩 1：{{ lowStockCount }} 件
   </span>
 </h2>   
+
+<div v-if="currentPage === 'use'" class="qr-scan-box">
+  <button class="scan-button" @click="startScan">
+    開始掃描 QR Code
+  </button>
+  
+  <button class="scan-stop-button" @click="stopScan">
+    停止掃描
+  </button>
+
+  <p v-if="scanBatchNo">掃描批號：{{ scanBatchNo }}</p>
+
+  <div id="qr-reader" class="qr-reader"></div>
+</div>
+
         <div class="table-wrapper">
   <table class="reagent-table">
      <thead>
@@ -1316,6 +1374,40 @@ select {
 .usage-log-title {
   font-size: 28px;
   margin-bottom: 16px;
+}
+
+.qr-scan-box {
+  margin: 16px 0;
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.scan-button,
+.scan-stop-button {
+  margin-right: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.scan-button {
+  background: #2563eb;
+  color: white;
+}
+
+.scan-stop-button {
+  background: #6b7280;
+  color: white;
+}
+
+.qr-reader {
+  width: 300px;
+  max-width: 100%;
+  margin-top: 12px;
 }
 
 </style>
