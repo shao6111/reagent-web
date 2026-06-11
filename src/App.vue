@@ -646,9 +646,13 @@ onMounted(() => {
          <div v-if="currentPage === 'use'" class="usage-log-section">
   <h2 class="usage-log-title">扣庫存紀錄清單</h2>
 
-  <div v-if="usageLogs.length === 0" class="empty-card">
-    目前沒有扣庫存紀錄
-  </div>
+  <div class="usage-log-card" v-for="log in usageLogs" :key="log.id">
+  <p><b>試劑：</b>{{ log.reagentName }}</p>
+  <p><b>批號：</b>{{ log.lotNo }}</p>
+  <p><b>使用數量：</b>{{ log.amount }}</p>
+  <p><b>時間：</b>{{ log.createdAt }}</p>
+</div>
+
 
   <div v-else class="table-wrapper">
     <table class="reagent-table">
@@ -1445,6 +1449,15 @@ select {
 .scan-stop-button {
   background: #dc2626;
   color: white;
+}
+
+.usage-log-card {
+  margin: 12px 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  font-size: 18px;
 }
 
 </style>
