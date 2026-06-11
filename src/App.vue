@@ -670,7 +670,7 @@ onMounted(() => {
 </div>
 
 
-  <div v-else class="table-wrapper">
+  <div v-else class="usage-log-wrapper">
     <table class="reagent-table">
       <thead>
         <tr>
@@ -1474,6 +1474,22 @@ select {
   background: #fff7ed;
   border: 1px solid #fed7aa;
   font-size: 18px;
+}
+
+.usage-log-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .usage-log-wrapper {
+    display: block !important;
+    overflow-x: auto;
+  }
+
+  .usage-log-wrapper .reagent-table {
+    min-width: 760px;
+  }
 }
 
 </style>
